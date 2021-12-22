@@ -1,5 +1,11 @@
 version: '3'
 services:
+  client:
+    build: './frontend'
+    ports: 
+      - '3000:3000'
+    depends_on:
+      - strapi
   strapi:
     image: strapi/strapi
     environment:
