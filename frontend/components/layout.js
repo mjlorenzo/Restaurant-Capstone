@@ -14,12 +14,14 @@ import {
 
 const Layout = (props) => {
   const title = "Welcome to Nextjs";
-  const { user } = useContext(AppContext);
+  const { user, setUser, setState } = useContext(AppContext);
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
   const link = new HttpLink({ uri: `${API_URL}/graphql` });
   const cache = new InMemoryCache();
   const client = new ApolloClient({ link, cache });
+
+  console.log(user);
   return (
     <ApolloProvider client={client}>
       <Head>
@@ -53,8 +55,8 @@ const Layout = (props) => {
             </Link>
           </NavItem>
           <NavItem className="ml-auto">
-            {user ? (
-              <h5>{user.username}</h5>
+            {user.isAuthenticated ? (
+              <h5>{user.user.username}</h5>
             ) : (
               <Link href="/register">
                 <a className="nav-link"> Sign up</a>
@@ -62,13 +64,14 @@ const Layout = (props) => {
             )}
           </NavItem>
           <NavItem>
-            {user ? (
+            {user.isAuthenticated ? (
               <Link href="/">
                 <a
                   className="nav-link"
                   onClick={() => {
                     logout();
-                    setUser(null);
+                    setUser({ user: null, isAuthenticated: false });
+                    setState({ cart: { items: [], total: 0 }});
                   }}
                 >
                   Logout

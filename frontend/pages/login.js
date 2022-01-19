@@ -23,7 +23,7 @@ function Login(props) {
   const appContext = useContext(AppContext);
 
   useEffect(() => {
-    if (appContext.isAuthenticated) {
+    if (appContext.user.isAuthenticated) {
       router.push("/"); // redirect if you're already logged in
     }
   }, []);
@@ -90,7 +90,9 @@ function Login(props) {
                           .then((res) => {
                             setLoading(false);
                             // set authed User in global context to update header/app state
-                            appContext.setUser(res.data.user);
+                            appContext.setUser({ user: res.data.user, isAuthenticated: true });
+                            appContext.setState({ cart: { items: [], total: 0 }});
+                            router.push("/");
                           })
                           .catch((error) => {
                             //setError(error.response.data);

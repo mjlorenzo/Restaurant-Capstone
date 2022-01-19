@@ -7,14 +7,26 @@ import Cookie from "js-cookie"
 
 
 function MyApp(props){
-  var {cart,addItem,removeItem, user, setUser} = useContext(AppContext)
+  var {cart,addItem,removeItem} = useContext(AppContext)
+  let appContext = useContext(AppContext);
   const [state,setState] = useState({cart:cart});
+  const [user, setUser] = useState({ user: null, isAuthenticated: false });
+
   const { Component, pageProps } = props;
   
   
-  setUser = (user) => {
-    setState({ user });
-  };
+  /*appContext.setUser = (newUser) => {
+    setState({ cart: { items: [], total: 0 } });
+    console.log("I'm HERE!");
+    if (!newUser) {
+      appContext.user = null;
+      appContext.isAuthenticated = false;
+      return;
+    }
+
+    appContext.user = newUser;
+    appContext.isAuthenticated = true;
+  };*/
   addItem = (item) => {
     let { items } = state.cart;
     //check for item already in cart
@@ -83,7 +95,7 @@ function MyApp(props){
   }
 
   return (
-    <AppContext.Provider value={{cart: state.cart, addItem: addItem, removeItem: removeItem,isAuthenticated:false,user:null,setUser:()=>{}}}>
+    <AppContext.Provider value={{cart: state.cart, addItem: addItem, removeItem: removeItem, setState, user, setUser }}>
       <Head>
         <link
           rel="stylesheet"

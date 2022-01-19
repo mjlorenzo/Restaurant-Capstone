@@ -50,10 +50,6 @@ function RestaurantList(props) {
   console.log(data.restaurants);
   console.log(searchQuery);
 
-  // definet renderer for Dishes
-  const renderDishes = (restaurantID) => {
-    return <Dishes restId={restaurantID}> </Dishes>;
-  };
   if (searchQuery.length > 0) {
     const restList = searchQuery.map((res) => (
       <Col xs="6" sm="4" key={res.id}>
@@ -81,7 +77,7 @@ function RestaurantList(props) {
       </Col>
     ));
   } else {
-    return <h1> No Restaurants Found</h1>;
+    return <h1>No Restaurants Found</h1>;
   }
 
   return (

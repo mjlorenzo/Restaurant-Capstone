@@ -34,7 +34,7 @@ function Restaurant() {
 
   return (
     <>
-    <h1>{JSON.stringify(data)}</h1>
+    <h1>{data.restaurant.name}</h1>
     <Dishes dishes={data.restaurant.dishes}></Dishes>
     <Cart></Cart>
     </>
