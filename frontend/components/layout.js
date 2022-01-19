@@ -5,12 +5,23 @@ import Head from "next/head";
 import Link from "next/link";
 import { Container, Nav, NavItem } from "reactstrap";
 import AppContext from "./context";
+import {
+  ApolloProvider,
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client";
 
 const Layout = (props) => {
-const title = "Welcome to Nextjs";
-const {user} = useContext(AppContext);
+  const title = "Welcome to Nextjs";
+  const { user } = useContext(AppContext);
+
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
+  const link = new HttpLink({ uri: `${API_URL}/graphql` });
+  const cache = new InMemoryCache();
+  const client = new ApolloClient({ link, cache });
   return (
-    <div>
+    <ApolloProvider client={client}>
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
@@ -72,7 +83,7 @@ const {user} = useContext(AppContext);
         </Nav>
       </header>
       <Container>{props.children}</Container>
-    </div>
+    </ApolloProvider>
   );
 };
 
