@@ -6,6 +6,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import CardSection from "./cardSection";
 import AppContext from "./context";
 import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
 function CheckoutForm() {
   const [data, setData] = useState({
@@ -18,6 +19,7 @@ function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
   const appContext = useContext(AppContext);
+  const router = useRouter();
 
   function onChange(e) {
     // set the key = to the name property equal to the value typed
@@ -54,6 +56,10 @@ function CheckoutForm() {
 
     if (!response.ok) {
       setError(response.statusText);
+    }
+    else {
+      appContext.resetCart();
+      router.push("/payment_success");
     }
 
     // OTHER stripe methods you can use depending on app

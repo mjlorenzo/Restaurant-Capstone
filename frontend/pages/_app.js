@@ -118,6 +118,11 @@ function MyApp(props) {
     setState({ cart: newCart });
   };
 
+  // utility function to reset the cart after actions
+  const resetCart = () => {
+    setState({ cart: { items: [], total: 0}});
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -127,6 +132,7 @@ function MyApp(props) {
         setState,
         user,
         setUser,
+        resetCart
       }}
     >
       <ApolloProvider client={client}>
