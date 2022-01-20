@@ -54,7 +54,6 @@ function CheckoutForm() {
 
     if (!response.ok) {
       setError(response.statusText);
-      console.log("SUCCESS")
     }
 
     // OTHER stripe methods you can use depending on app

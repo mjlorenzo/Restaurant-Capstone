@@ -14,12 +14,15 @@ import {
 } from "reactstrap";
 import { registerUser } from "../components/auth";
 import AppContext from "../components/context";
+import { useRouter } from "next/router";
 
 const Register = () => {
   const [data, setData] = useState({ email: "", username: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const appContext = useContext(AppContext);
+  const router = useRouter();
+
   return (
     <Container>
       <Row>
@@ -97,9 +100,10 @@ const Register = () => {
                         registerUser(data.username, data.email, data.password)
                           .then((res) => {
                             // set authed user in global context object
-                            appContext.setUser(res.data.user);
+                            appContext.setUser({ user: res.data.user, isAuthenticated: true });
                             setLoading(false);
-                            console.log(`registered user: ${JSON.stringify(res.data)}`)
+                            console.log(`registered user: ${JSON.stringify(res.data)}`);
+                            router.replace("/user_success");
                           })
                           .catch((error) => {
                             console.log(`error in register: ${error}`)
