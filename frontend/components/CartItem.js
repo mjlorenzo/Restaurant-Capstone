@@ -4,12 +4,25 @@ import AppContext from "./context";
 
 function CartItem({ item }) {
   const context = useContext(AppContext);
-  const { addItem, removeItem } = context;
+  const { addItem, removeItem, cart, setState } = context;
   const [quantity, setQuantity] = useState(1);
 
-  const isValidQuantity = (q) => q >= 0 && q % 10 == 0;
+  const isValidQuantity = (q) => {
+    return (q >= 0) && (q % 1 == 0);
+  }
   function handleQuantityInput(e) {
-    setQuantity(e.target.value);
+    console.log(Number(e.target.value));
+    setQuantity(Number(e.target.value));
+  }
+
+  const calcCartTotal = cart => cart.items.reduce((prev, item,) => prev + (item.price * item.quantity), 0);
+
+  function setItemQuantity() {
+    item.quantity = quantity;
+    console.log(cart);
+    console.log(cart.items);
+    console.log(calcCartTotal(cart));
+    setState({cart: { items: cart.items, total: calcCartTotal(cart) }});
   }
 
   return (
@@ -58,7 +71,7 @@ function CartItem({ item }) {
       </div>
       <div>
         <input type="number" min="0" step="1" defaultValue={item.quantity} style={{ border: isValidQuantity(quantity) ? "black" : "red" }} onInput={handleQuantityInput} />
-        <Button type="info" disabled={!isValidQuantity(quantity)}>Update</Button>
+        <Button type="info" disabled={!isValidQuantity(quantity)} onClick={setItemQuantity}>Update</Button>
       </div>
     </div>
   );
