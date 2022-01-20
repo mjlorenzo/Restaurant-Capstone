@@ -11,6 +11,7 @@ import {
   FormGroup,
   Label,
   Input,
+  Alert
 } from "reactstrap";
 import { login } from "../components/auth";
 import AppContext from "../components/context";
@@ -37,24 +38,8 @@ function Login(props) {
       <Row>
         <Col sm="12" md={{ size: 5, offset: 3 }}>
           <div className="paper">
-            <div className="header">
-              <img src="http://localhost:1337/uploads/5a60a9d26a764e7cba1099d8b157b5e9.png" />
-            </div>
+            <h2>Login</h2>
             <section className="wrapper">
-              {Object.entries(error).length !== 0 &&
-                error.constructor === Object &&
-                error.message.map((error) => {
-                  return (
-                    <div
-                      key={error.messages[0].id}
-                      style={{ marginBottom: 10 }}
-                    >
-                      <small style={{ color: "red" }}>
-                        {error.messages[0].message}
-                      </small>
-                    </div>
-                  );
-                })}
               <Form>
                 <fieldset disabled={loading}>
                   <FormGroup>
@@ -76,11 +61,6 @@ function Login(props) {
                   </FormGroup>
 
                   <FormGroup>
-                    <span>
-                      <a href="">
-                        <small>Forgot Password?</small>
-                      </a>
-                    </span>
                     <Button
                       style={{ float: "right", width: 120 }}
                       color="primary"
@@ -95,7 +75,7 @@ function Login(props) {
                             router.push("/");
                           })
                           .catch((error) => {
-                            //setError(error.response.data);
+                            setError(error.response.data.message[0].messages[0].message);
                             setLoading(false);
                           });
                       }}
@@ -105,6 +85,7 @@ function Login(props) {
                   </FormGroup>
                 </fieldset>
               </Form>
+              {error && <Alert type="danger">{error}</Alert>}
             </section>
           </div>
         </Col>

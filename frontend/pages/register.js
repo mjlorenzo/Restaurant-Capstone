@@ -11,6 +11,7 @@ import {
   FormGroup,
   Label,
   Input,
+  Alert,
 } from "reactstrap";
 import { registerUser } from "../components/auth";
 import AppContext from "../components/context";
@@ -19,7 +20,7 @@ import { useRouter } from "next/router";
 const Register = () => {
   const [data, setData] = useState({ email: "", username: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState({});
+  const [error, setError] = useState("");
   const appContext = useContext(AppContext);
   const router = useRouter();
 
@@ -29,31 +30,41 @@ const Register = () => {
         <Col sm="12" md={{ size: 5, offset: 3 }}>
           <div className="paper">
             <div className="header">
-              <img src="http://localhost:1337/uploads/5a60a9d26a764e7cba1099d8b157b5e9.png" />
+              <h2>Register</h2>
             </div>
             <section className="wrapper">
-              {Object.entries(error).length !== 0 &&
-                error.constructor === Object &&
-                error.message.map((error) => {
-                  return (
-                    <div
-                      key={error.messages[0].id}
-                      style={{ marginBottom: 10 }}
-                    >
-                      <small style={{ color: "red" }}>
-                        {error.messages[0].message}
-                      </small>
-                    </div>
-                  );
-                })}
               <Form>
                 <fieldset disabled={loading}>
+                <FormGroup>
+                    <Label>Username:</Label>
+                    <Input
+                      onChange={(e) => {
+                        setData({ ...data, username: e.target.value });
+
+                        if (!e.target.value)
+                          setError("Username is required");
+                        else
+                          setError("");
+                      }}
+                      value={data.username}
+                      type="text"
+                      name="text"
+                      style={{ height: 50, fontSize: "1.2em" }}
+                    />
+                  </FormGroup>
                   <FormGroup>
                     <Label>Email:</Label>
                     <Input
-                      onChange={(e) =>
-                        setData({ ...data, email: e.target.value })
-                      }
+                      onChange={(e) => {
+                        setData({ ...data, email: e.target.value });
+
+                        if (!e.target.value)
+                          setError("Email is required");
+                        else if (!e.target.checkValidity())
+                          setError("Email is invalid");
+                        else
+                          setError("");
+                      }}
                       value={data.email}
                       type="email"
                       name="email"
@@ -63,9 +74,12 @@ const Register = () => {
                   <FormGroup style={{ marginBottom: 30 }}>
                     <Label>Password:</Label>
                     <Input
-                      onChange={(e) =>
-                        setData({ ...data, password: e.target.value })
-                      }
+                      onChange={(e) => {
+                        setData({ ...data, password: e.target.value });
+
+                        if (!e.target.value)
+                          setError("Password is required");
+                      }}
                       value={data.password}
                       type="password"
                       name="password"
@@ -73,15 +87,10 @@ const Register = () => {
                     />
                   </FormGroup>
                   <FormGroup>
-                    <span>
-                      <a href="">
-                        <small>Forgot Password?</small>
-                      </a>
-                    </span>
                     <Button
                       style={{ float: "right", width: 120 }}
                       color="primary"
-                      disabled={loading}
+                      disabled={loading || !(error == "")}
                       onClick={() => {
                         setLoading(true);
                         registerUser(data.username, data.email, data.password)
@@ -94,7 +103,7 @@ const Register = () => {
                           })
                           .catch((error) => {
                             console.log(`error in register: ${error}`)
-                            //setError(error.response.data);
+                            setError(error.response.data.message[0].messages[0].message);
                             setLoading(false);
                           });
                       }}
@@ -104,6 +113,7 @@ const Register = () => {
                   </FormGroup>
                 </fieldset>
               </Form>
+              {error && <Alert type="danger">{error}</Alert>}
             </section>
           </div>
         </Col>
