@@ -13,6 +13,9 @@ function Dishes({ dishes }){
 
   const {addItem} = useContext(AppContext)
 
+  if (!dishes || !dishes.length)
+    return (<h2>No dishes to display</h2>)
+
     return (
       <>
           {dishes.map((res) => (

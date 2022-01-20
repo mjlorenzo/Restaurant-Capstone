@@ -48,7 +48,7 @@ const Layout = (props) => {
           </NavItem>
           <NavItem className="ml-auto">
             {user.isAuthenticated ? (
-              <h5>{user.user.username}</h5>
+              <h5>{user.user.email}</h5>
             ) : (
               <Link href="/register">
                 <a className="nav-link"> Sign up</a>

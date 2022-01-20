@@ -49,19 +49,6 @@ const Register = () => {
               <Form>
                 <fieldset disabled={loading}>
                   <FormGroup>
-                    <Label>Username:</Label>
-                    <Input
-                      disabled={loading}
-                      onChange={(e) =>
-                        setData({ ...data, username: e.target.value })
-                      }
-                      value={data.username}
-                      type="text"
-                      name="username"
-                      style={{ height: 50, fontSize: "1.2em" }}
-                    />
-                  </FormGroup>
-                  <FormGroup>
                     <Label>Email:</Label>
                     <Input
                       onChange={(e) =>
