@@ -18,6 +18,9 @@ function CartItem({ item }) {
   const calcCartTotal = cart => cart.items.reduce((prev, item,) => prev + (item.price * item.quantity), 0);
 
   function setItemQuantity() {
+    if (item.quantity == quantity)
+      return;
+      
     item.quantity = quantity;
     console.log(cart);
     console.log(cart.items);

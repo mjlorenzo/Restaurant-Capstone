@@ -39,7 +39,31 @@ function CheckoutForm() {
     // get token back from stripe to process credit card
     const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1337";
 
+    if (!data.address) {
+      setError("Address is required");
+      return;
+    }
+    else if (!data.city) {
+      setError("City is required");
+      return;
+    }
+    else if (!data.state) {
+      setError("State is required");
+      return;
+    }
+    else if (appContext.cart.total == 0) {
+      setError("There is nothing in your cart");
+      return;
+    }
+
     const token = await stripe.createToken(cardElement);
+
+    if (token.error) {
+      console.log(token.error);
+      setError(token.error.message);
+      return;
+    }
+
     const userToken = Cookies.get("token");
     const response = await fetch(`${API_URL}/orders`, {
       method: "POST",
